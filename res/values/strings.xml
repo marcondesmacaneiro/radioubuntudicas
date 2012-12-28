@@ -2,7 +2,6 @@
     <string name="app_name">Rádio UBUNTU Dicas</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Rádio UBUNTU Dicas</string>
-    <string name="str_play">Play</string>
-    <string name="str_pause">Pause</string>
-    <string name="str_stop">Stop</string>
+    <string name="str_play">Tocar</string>
+    <string name="btnTeste">testar</string>
 </resources>
