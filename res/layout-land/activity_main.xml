@@ -4,7 +4,13 @@
     android:layout_height="fill_parent"
     android:gravity="bottom|center"
     android:orientation="vertical"
-    android:background="@drawable/fundowide" >
+    android:background="@drawable/fundo_ubuntu" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_capa" />
 
     <Button
         android:id="@+id/botaoVisualizar"

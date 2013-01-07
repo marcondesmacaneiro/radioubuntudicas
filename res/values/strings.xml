@@ -4,4 +4,6 @@
     <string name="title_activity_main">Rádio UBUNTU Dicas</string>
     <string name="str_play">Tocar</string>
     <string name="btnTeste">testar</string>
+    <string name="dscLogo">Logo UbuntuDicas</string>
+    <string name="nomeMusica">-- Music --</string>
 </resources>
