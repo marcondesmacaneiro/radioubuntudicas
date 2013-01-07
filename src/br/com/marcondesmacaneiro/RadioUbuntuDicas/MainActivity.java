@@ -1,17 +1,5 @@
 package br.com.marcondesmacaneiro.RadioUbuntuDicas;
 
-import java.net.URI;
-import java.util.List;
-
-import net.moraleboost.streamscraper.Scraper;
-import net.moraleboost.streamscraper.Stream;
-import net.moraleboost.streamscraper.scraper.IceCastScraper;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnInfoListener;
-import android.media.MediaPlayer.OnPreparedListener;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,11 +7,18 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaPlayer.OnInfoListener;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener,
@@ -35,11 +30,14 @@ public class MainActivity extends Activity implements OnClickListener,
 	private MediaPlayer mp;
 	private ProgressDialog pd;
 	private static final int HELLO_ID = 1;
+	private TextView txtNomeMusica;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		txtNomeMusica = (TextView) findViewById(R.id.txtNomeMusica);
 
 		if (mp == null) {
 			mp = MyMediaPlayer.getInstance().getMediaPlayer();
@@ -82,6 +80,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		
 		MyAsyncTask my = new MyAsyncTask();
 		my.execute();
+		
+		txtNomeMusica.setText("Capturar o nome da Musica");
 		
 		mostrar.setText("Parar");
 
@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	@Override
 	public boolean onInfo(MediaPlayer mp, int what, int extra) {
-		Log.e("MUSICA", mp.toString());
+		Log.e("onInfo", mp.toString());
 		return true;
 	}
 }
