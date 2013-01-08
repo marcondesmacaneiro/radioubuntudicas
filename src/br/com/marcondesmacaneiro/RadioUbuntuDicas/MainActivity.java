@@ -63,7 +63,10 @@ public class MainActivity extends Activity implements OnClickListener,
 			// mp.stop();
 			Log.e(TAG, "IFFFFF");
 			mostrar.setText("Parar");
-			//timerAtual.cancel();
+			timerAtual.cancel();
+			//task.cancel();
+			timerAtual = new Timer();
+			
 			//task.cancel();
 			ativaTimer();
 		} else {
@@ -73,7 +76,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	}
 
 	private void ativaTimer() {
-		if (task == null) {
+	
 			Log.d("TIMER", "IF TIMER");
 			task = new TimerTask() {
 				public void run() {
@@ -90,10 +93,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				}
 			};
 			timerAtual.schedule(task, 300, 3000);
-		} else {
-			Log.d("TIMER", "ELSE TIMER");
-			timerAtual.schedule(task, 300, 3000);
-		}
+		
 	}
 
 	public void onCompletion(MediaPlayer arg0) {
@@ -179,7 +179,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		mp.stop();
 
 		timerAtual.cancel();
-		//timerAtual.purge();
+		timerAtual = new Timer();
+		task.cancel();
+		//task.
+		task = null;
 				
 		txtNomeMusica.setText("-- Bem vindo a Rádio UbuntuDicas --");
 		
