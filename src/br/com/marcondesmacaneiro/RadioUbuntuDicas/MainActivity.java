@@ -1,5 +1,8 @@
 package br.com.marcondesmacaneiro.RadioUbuntuDicas;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,6 +16,7 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -32,11 +36,16 @@ public class MainActivity extends Activity implements OnClickListener,
 	private static final int HELLO_ID = 1;
 	private TextView txtNomeMusica;
 
+	// Timer para atualização do nome da música
+	private Timer timerAtual = new Timer();
+	private TimerTask task;
+	private final Handler handler = new Handler();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		txtNomeMusica = (TextView) findViewById(R.id.txtNomeMusica);
 
 		if (mp == null) {
@@ -54,9 +63,36 @@ public class MainActivity extends Activity implements OnClickListener,
 			// mp.stop();
 			Log.e(TAG, "IFFFFF");
 			mostrar.setText("Parar");
+			//timerAtual.cancel();
+			//task.cancel();
+			ativaTimer();
 		} else {
 			mostrar.setText("Tocar");
 			Log.e(TAG, "ELSEEEEEEEEEEEEE");
+		}
+	}
+
+	private void ativaTimer() {
+		if (task == null) {
+			Log.d("TIMER", "IF TIMER");
+			task = new TimerTask() {
+				public void run() {
+					handler.post(new Runnable() {
+						public void run() {
+							Log.d("Debug", "Timer ativado");
+							
+							MyAsyncTask my = new MyAsyncTask();
+							my.setTextView(txtNomeMusica);
+							my.execute();
+							
+						}
+					});
+				}
+			};
+			timerAtual.schedule(task, 300, 3000);
+		} else {
+			Log.d("TIMER", "ELSE TIMER");
+			timerAtual.schedule(task, 300, 3000);
 		}
 	}
 
@@ -78,11 +114,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		mp.start();
 		pd.dismiss();
 		
-		MyAsyncTask my = new MyAsyncTask();
-		my.execute();
-		
-		txtNomeMusica.setText("Capturar o nome da Musica");
-		
+		ativaTimer();
+
 		mostrar.setText("Parar");
 
 		String ns = Context.NOTIFICATION_SERVICE;
@@ -143,11 +176,13 @@ public class MainActivity extends Activity implements OnClickListener,
 	}
 
 	private void stop() {
-		// mp.reset();
-		// mp.release();
-
 		mp.stop();
 
+		timerAtual.cancel();
+		//timerAtual.purge();
+				
+		txtNomeMusica.setText("-- Bem vindo a Rádio UbuntuDicas --");
+		
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 		int icon = R.drawable.icon_radio;
@@ -182,7 +217,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onSaveInstanceState(savedInstanceState);
 
 		savedInstanceState.putString("btnPlay", mostrar.getText().toString());
-
+		savedInstanceState.putString("txtNomeMusica", txtNomeMusica.getText().toString());
 	}
 
 	@Override
@@ -190,6 +225,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onRestoreInstanceState(savedInstanceState);
 
 		mostrar.setText(savedInstanceState.getString("btnPlay"));
+		txtNomeMusica.setText(savedInstanceState.getString("txtNomeMusica"));
 	}
 
 	@Override
