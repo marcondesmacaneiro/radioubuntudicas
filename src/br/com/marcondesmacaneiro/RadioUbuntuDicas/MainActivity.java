@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
@@ -27,7 +28,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnPreparedListener, OnErrorListener, OnCompletionListener,
-		OnInfoListener {
+		OnInfoListener, OnBufferingUpdateListener {
 
 	private Button mostrar;
 	private String TAG = getClass().getSimpleName();
@@ -102,9 +103,11 @@ public class MainActivity extends Activity implements OnClickListener,
 				.show();
 		// mp.start();
 	}
-
+	
+	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		pd.dismiss();
+		Log.e("onError","Erro no player");
 		return false;
 	}
 
@@ -211,6 +214,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		mostrar.setText("Tocar");
 	}
 
+	@Override
 	public void onBufferingUpdate(MediaPlayer mp, int percent) {
 		Log.d(TAG, "PlayerService onBufferingUpdate : " + percent + "%");
 	}
